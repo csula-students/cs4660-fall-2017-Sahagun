@@ -13,15 +13,14 @@ class SimpleFile(object):
         f = open(file_path, encoding='utf-8')
         lines = f.readlines()    # unicode, not bytes
         
-        global _arr
-        _arr = []
+        self._arr = []
        
         for line in lines:
             string_list = line.split()
             int_list = []
             for s in string_list:
                 int_list.append(int(s))
-            _arr.append(int_list)
+            self._arr.append(int_list)
 
 
     def get_mean(self, line_number):
@@ -29,25 +28,25 @@ class SimpleFile(object):
         get_mean retrieves the mean value of the list by line_number (starts
         with zero)
         """
-        return sum (_arr[line_number]) / float(len(_arr[line_number]))
+        return sum (self._arr[line_number]) / float(len(self._arr[line_number]))
 
     def get_max(self, line_number):
         """
         get_max retrieves the maximum value of the list by line_number (starts
         with zero)
         """
-        return max(_arr[line_number])
+        return max(self._arr[line_number])
 
     def get_min(self, line_number):
         """
         get_min retrieves the minimum value of the list by line_number (starts
         with zero)
         """
-        return min(_arr[line_number])
+        return min(self._arr[line_number])
 
     def get_sum(self, line_number):
         """
         get_sum retrieves the sumation of the list by line_number (starts with
         zero)
         """
-        return sum(_arr[line_number])
+        return sum(self._arr[line_number])
