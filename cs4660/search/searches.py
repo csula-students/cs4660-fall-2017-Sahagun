@@ -3,6 +3,7 @@ Searches module defines all different search algorithms
 """
 from graph import graph as Graph
 import queue
+import math
 
 def bfs(graph, initial_node, dest_node):
     """
@@ -154,8 +155,52 @@ def a_star_search(graph, initial_node, dest_node):
     uses graph to do search from the initial_node to dest_node
     returns a list of actions going from the initial node to dest_node
     """
-    frontier = queueQueue();
-    exploredSet = [] # treat as a set
-    parents = {}
 
-    pass
+    frontier = [] # treat as a queue
+    explored_set = [] # treat as a set
+    parent_nodes = {}
+
+    initial = (0, initial_node) 
+    frontier.append(initial)
+
+    g_score = {}
+    g_score[initial_node] = 0
+
+    f_score = {}
+    f_score[initial_node] = heuristicCost(initial_node, dest_node)
+
+    while frontier:
+        current = frontier.pop(0)
+        current_dist = current[0]
+        current_node = current[1]
+
+        if current_node == dest_node:
+            return construct_path(dest_node, parent_nodes, graph)
+        explored_set.append(current_node)
+
+        for node in graph.neighbors(current_node):
+            if node in explored_set:
+                continue
+
+            temp_g_score = g_score[current_node] + graph.distance(current_node, node)
+
+            if node not in g_score:
+                frontier.append((float('inf'), node))
+                g_score[node] = float('inf')
+                f_score[node] = float('inf')
+
+            elif temp_g_score >= g_score[node]:
+                continue
+
+            parent_nodes[node] = current_node
+            g_score[node] = temp_g_score
+            f_score[node] = g_score[node] + heuristicCost(node, dest_node)
+
+    return []
+
+
+def heuristicCost(from_node, to_node):
+    d = 1
+    dx = abs(from_node.data.x - to_node.data.x)  
+    dy = abs(from_node.data.y - to_node.data.y)
+    return d * math.sqrt(dx * dx + dy * dy)

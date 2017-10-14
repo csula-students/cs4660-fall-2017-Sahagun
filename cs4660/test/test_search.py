@@ -7,7 +7,6 @@ from search import searches
 from graph import utils
 from graph import graph
 
-
 class TestBFS(unittest.TestCase):
     def setUp(self):
         graph_1_path = './test/fixtures/graph-1.txt'
@@ -190,9 +189,7 @@ class TestDijkstra(unittest.TestCase):
             )
 
     def test_dijkstra_5(self):
-
         for g in self.graph_2s:
-
             self.assertEqual(
                 [
                     graph.Edge(graph.Node(0), graph.Node(6), 3),
@@ -284,7 +281,6 @@ class TestAStar(unittest.TestCase):
         )
         print("A_star_5: %.6f seconds" % (time.time() - start_time))
         self.assertTrue(string_equal_without_order(path, expected_path))
-
 
 def construct_graph(graph_path):
     """Helper function to construct graph given graph_path"""
