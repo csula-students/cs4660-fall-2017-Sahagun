@@ -196,8 +196,6 @@ if __name__ == "__main__":
     print("Dijkstra Path:")
 #    b = dijkstra_search(initial_node)
     print("Empty Room(7f3dc077574c013d98b2de8f735058b4):Dark Room (f1f131f647621a4be7c71292e79613f9):0. By Instant Transmission ")
-    for i in b:
-        print(i)
 """
     print(empty_room)
     print()
