@@ -2,7 +2,6 @@
 Searches module defines all different search algorithms
 """
 from graph import graph as Graph
-import queue
 import math
 
 def bfs(graph, initial_node, dest_node):
