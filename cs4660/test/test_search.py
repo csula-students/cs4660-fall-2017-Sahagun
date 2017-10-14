@@ -202,8 +202,6 @@ class TestDijkstra(unittest.TestCase):
                 searches.dijkstra_search(g, graph.Node(0), graph.Node(5))
             )
 
-"""
-
 class TestAStar(unittest.TestCase):
     def setUp(self):
         grid_1_path = './test/fixtures/grid-1.txt'
@@ -287,7 +285,6 @@ class TestAStar(unittest.TestCase):
         print("A_star_5: %.6f seconds" % (time.time() - start_time))
         self.assertTrue(string_equal_without_order(path, expected_path))
 
-"""
 
 def construct_graph(graph_path):
     """Helper function to construct graph given graph_path"""
