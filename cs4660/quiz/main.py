@@ -89,6 +89,7 @@ def bfs(initial_node, end_node_id = "f1f131f647621a4be7c71292e79613f9"):
         current = open_set.pop(0) 
         current_dist = current[0]
         current_node = current[1]
+        print(current[1])
 
         neighbors = []
         room = get_state(current_node.data)
@@ -99,17 +100,18 @@ def bfs(initial_node, end_node_id = "f1f131f647621a4be7c71292e79613f9"):
         for child_node in neighbors:
             #effect
             #    print(transition_state(empty_room['id'], empty_room['neighbors'][0]['id']))
+#            dist = -1 * transition_state(current_node.data, child_node.data)["event"]["effect"]
             dist = transition_state(current_node.data, child_node.data)["event"]["effect"]
             # calculate the dist of the current node and its child plus the dist already traveled
             child_dist = distance_dict[current_node] + dist
             child = (child_dist, child_node)
 
             # already visted
-            if child_node in close_set:
+            if child_node in distance_dict:
                 continue
 
             # put the child into the dict
-            if child not in open_set:
+            if child not in distance_dict:
                 distance_dict[child_node] = child_dist
                 parent_nodes[child_node] = current_node
                 
@@ -153,7 +155,7 @@ def dijkstra_search(initial_node, end_node_id  = "f1f131f647621a4be7c71292e79613
     open_set.append(v)
 
 
-    if initial_node == dest_node:
+    if initial_node.data == end_node_id:
         return []
 
     while open_set:
@@ -162,24 +164,33 @@ def dijkstra_search(initial_node, end_node_id  = "f1f131f647621a4be7c71292e79613
         current_dist = current[0]
         current_node = current[1]
 
-        for child_node in graph.neighbors(current_node):
+        neighbors = []
+        room = get_state(current_node.data)
+        for n in room["neighbors"]: # list of dict
+            new_node = graph.Node(n["id"])
+            neighbors.append(new_node)
+
+        for child_node in neighbors:
             # calculate the dist of the current node and its child plus the dist already traveled
-            child_dist = distance_dict[current_node] + graph.distance(current_node, child_node)
+            dist = transition_state(current_node.data, child_node.data)["event"]["effect"]
+
+            child_dist = distance_dict[current_node] + dist
             child = (child_dist, child_node)
+
+            # already visted
+            if child_node in close_set:
+                continue
 
             # put the child into the dict
             # queues are not iterable so cant check if in openset
-            if child_node not in distance_dict or (child_dist < distance_dict[child_node]):
+            if child_node not in distance_dict or (child_dist >= distance_dict[child_node]):
                 distance_dict[child_node] = child_dist
                 parent_nodes[child_node] = current_node
-                if dest_node == child_node:
+                if child_node.data == end_node_id:
                     last_node = child_node
                 open_set.append(child)
-        close_set.append(current)
-    return construct_path(dest_node, parent_nodes, graph)
-
-
-
+        close_set.append(current_node)
+    return construct_path(last_node, parent_nodes, distance_dict)
 
 if __name__ == "__main__":
     # Your code starts here
@@ -193,9 +204,11 @@ if __name__ == "__main__":
         print(i)
 
 
-    print("Dijkstra Path:")
-#    b = dijkstra_search(initial_node)
-    print("Empty Room(7f3dc077574c013d98b2de8f735058b4):Dark Room (f1f131f647621a4be7c71292e79613f9):0. By Instant Transmission ")
+    print("dijkstra_search:")
+    d = dijkstra_search(initial_node)
+    for i in d:
+        print(i)
+
 """
     print(empty_room)
     print()
