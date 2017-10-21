@@ -4,7 +4,7 @@ utils package is for some quick utility methods
 such as parsing
 """
 
-from graph import graph as Graph
+from . import graph as g
 
 class Tile(object):
     """Node represents basic unit of graph"""
@@ -40,7 +40,7 @@ def parse_grid_file(graph, file_path):
     # TODO: read the filepaht line by line to construct nodes & edges
 
     # TODO: for each node/edge above, add it to graph
-    file = open(file_path, encoding="utf-8")
+    file = open(file_path)
     lines = file.readlines()
 
     rows = [] 
@@ -65,7 +65,7 @@ def parse_grid_file(graph, file_path):
         for coord in row:
             # not a wall
             if coord != '##':
-                node = Graph.Node(Tile(x,y,coord))
+                node = g.Node(Tile(x,y,coord))
                 nodes.append(node)
 
                 # surrounding coord
@@ -76,8 +76,8 @@ def parse_grid_file(graph, file_path):
                         # again if not wall
                         current_coord = rows[adjacent[1]][adjacent[0]]
                         if current_coord != '##':
-                            to_node = Graph.Node(Tile(adjacent[0], adjacent[1], current_coord))
-                            edges.append(Graph.Edge(node, to_node, 1))
+                            to_node = g.Node(Tile(adjacent[0], adjacent[1], current_coord))
+                            edges.append(g.Edge(node, to_node, 1))
             x += 1
         y += 1 
 
