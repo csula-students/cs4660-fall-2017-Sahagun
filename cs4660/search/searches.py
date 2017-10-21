@@ -159,7 +159,7 @@ def a_star_search(graph, initial_node, dest_node):
     returns a list of actions going from the initial node to dest_node
     """
     frontier = queue.PriorityQueue() # treat as a queue
-    explored_set = [] # treat as a set
+    explored_set = {}
     parent_nodes = {}
 
     initial = PriorityWrapper(0, initial_node) 
@@ -182,7 +182,7 @@ def a_star_search(graph, initial_node, dest_node):
         if current_node == dest_node:
             return construct_path(dest_node, parent_nodes, graph)
 
-        explored_set.append(current_node)
+        explored_set[current_node] = True
 
         for neighbor_node in graph.neighbors(current_node):
 
