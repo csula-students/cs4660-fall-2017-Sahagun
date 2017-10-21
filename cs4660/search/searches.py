@@ -1,7 +1,7 @@
 """
 Searches module defines all different search algorithms
 """
-from graph import graph as Graph
+from graph import graph as g
 import math
 try:
     import Queue as queue
@@ -66,7 +66,7 @@ def bfs(graph, initial_node, dest_node):
 def construct_path(node, parents, graph):
     path = []
     while node in parents:
-        path.append(Graph.Edge(parents[node], node, graph.distance(parents[node], node)))
+        path.append(g.Edge(parents[node], node, graph.distance(parents[node], node)))
         node = parents[node]
     return list(reversed(path))
 
@@ -90,7 +90,7 @@ def dfs(graph, initial_node, dest_node):
     current_node = dest_node
     while current_node != initial_node:
         next_node = parent_nodes[current_node]
-        path.insert(0, Graph.Edge(next_node, current_node, graph.distance(next_node, current_node)))
+        path.insert(0, g.Edge(next_node, current_node, graph.distance(next_node, current_node)))
         current_node = next_node
 
     return path
