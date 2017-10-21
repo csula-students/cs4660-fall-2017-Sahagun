@@ -228,7 +228,7 @@ class TestAStar(unittest.TestCase):
                     )
                 )
             )
-        #print("A_star_1: %.6f seconds" % (time.time() - start_time))
+        print("A_star_1: %.6f seconds" % (time.time() - start_time))
 
     def test_a_star_2(self):
         start_time = time.time()
@@ -241,7 +241,7 @@ class TestAStar(unittest.TestCase):
                 )
             )
             self.assertTrue(string_equal_without_order(path, "SSSSEEEEEEEEEEEEENNWNWNW"))
-        #print("A_star_2: %.6f seconds" % (time.time() - start_time))
+        print("A_star_2: %.6f seconds" % (time.time() - start_time))
 
     def test_a_star_3(self):
         start_time = time.time()
@@ -254,7 +254,8 @@ class TestAStar(unittest.TestCase):
                 )
             )
             self.assertTrue(string_equal_without_order(path, "SSSSEESESSWWWW"))
-        #print("A_star_3: %.6f seconds" % (time.time() - start_time))
+        print("A_star_3: %.6f seconds" % (time.time() - start_time))
+
     def test_a_star_4(self):
         start_time = time.time()
         expected_path = "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSESE"
@@ -266,7 +267,7 @@ class TestAStar(unittest.TestCase):
             )
         )
         self.assertTrue(string_equal_without_order(path, expected_path))
-        #print("A_star_4: %.6f seconds" % (time.time() - start_time))
+        print("A_star_4: %.6f seconds" % (time.time() - start_time))
 
     def test_a_star_5(self):
         start_time = time.time()
@@ -278,7 +279,7 @@ class TestAStar(unittest.TestCase):
                 graph.Node(utils.Tile(201, 206, "@5"))
             )
         )
-        #print("A_star_5: %.6f seconds" % (time.time() - start_time))
+        print("A_star_5: %.6f seconds" % (time.time() - start_time))
         self.assertTrue(string_equal_without_order(path, expected_path))
 
 def construct_graph(graph_path):
