@@ -116,11 +116,9 @@ class AdjacencyList(object):
 
     def neighbors(self, node):
         neighbors = []
-        if node not in self.adjacency_list.keys():
-            return neighbors
-
-        for edge in self.adjacency_list[node]:
-            neighbors.append(edge.to_node)
+        if node in self.adjacency_list:
+            for edge in self.adjacency_list[node]:
+                neighbors.append(edge.to_node)
 
         return neighbors
 
@@ -148,8 +146,12 @@ class AdjacencyList(object):
 
     def add_edge(self, edge):
         from_node = edge.from_node
+        to_node = edge.to_node
 
         if from_node not in self.adjacency_list.keys():
+            return False
+
+        if to_node not in self.adjacency_list.keys():
             return False
 
         if edge in self.adjacency_list[from_node]:
@@ -171,6 +173,16 @@ class AdjacencyList(object):
         self.adjacency_list[from_node].remove(edge)
 
         return True
+
+
+    def distance(self, node_1, node_2):
+        if node_1 in self.adjacency_list:
+            for edge in self.adjacency_list[node_1]:
+                if edge.to_node == node_2:
+                    return edge.weight
+
+        return None
+
 
 class AdjacencyMatrix(object):
     def __init__(self):
@@ -261,6 +273,12 @@ class AdjacencyMatrix(object):
         except:
             return False
 
+    def distance(self, node_1, node_2):
+        if node_1 not in self.nodes or node_2 not in self.nodes:
+            return None
+        i = self.__get_node_index(node_1)
+        j = self.__get_node_index(node_2)
+        return self.adjacency_matrix[i][j]
 
 class ObjectOriented(object):
     """ObjectOriented defines the edges and nodes as both list"""
@@ -302,7 +320,7 @@ class ObjectOriented(object):
                 edges_to_remove.append(edge)
 
         for edge in edges_to_remove:
-        	self.edges.remove(edge)
+            self.edges.remove(edge)
 
         return True
 
@@ -326,3 +344,9 @@ class ObjectOriented(object):
 
         self.edges.remove(edge)
         return True
+
+    def distance(self, from_node, to_node):
+        for edge in self.edges:
+            if edge.from_node == from_node and edge.to_node == to_node:
+                return edge.weight
+        return None
