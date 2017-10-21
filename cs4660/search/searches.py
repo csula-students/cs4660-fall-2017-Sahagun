@@ -3,6 +3,10 @@ Searches module defines all different search algorithms
 """
 from graph import graph as Graph
 import math
+try:
+    import Queue as queue
+except ImportError:
+    import queue
 
 def bfs(graph, initial_node, dest_node):
     """
@@ -154,13 +158,12 @@ def a_star_search(graph, initial_node, dest_node):
     uses graph to do search from the initial_node to dest_node
     returns a list of actions going from the initial node to dest_node
     """
-
-    frontier = [] # treat as a queue
+    frontier = queue.PriorityQueue() # treat as a queue
     explored_set = [] # treat as a set
     parent_nodes = {}
 
-    initial = (0, initial_node) 
-    frontier.append(initial)
+    initial = PriorityWrapper(0, initial_node) 
+    frontier.put(initial)
 
     g_score = {}
     g_score[initial_node] = 0
@@ -169,20 +172,33 @@ def a_star_search(graph, initial_node, dest_node):
     f_score[initial_node] = heuristicCost(initial_node, dest_node)
 
     while frontier:
-        current = frontier.pop(0)
-        current_dist = current[0]
-        current_node = current[1]
+        current = frontier.get()
+        current_dist = current.distance
+        current_node = current.data
+
+        if current_node in explored_set:
+            continue
 
         if current_node == dest_node:
             return construct_path(dest_node, parent_nodes, graph)
+
         explored_set.append(current_node)
 
-        for node in graph.neighbors(current_node):
-            if node in explored_set:
-                continue
+        for neighbor_node in graph.neighbors(current_node):
 
-            temp_g_score = g_score[current_node] + graph.distance(current_node, node)
+            if neighbor_node not in explored_set:
+                temp_g_score = float('inf')
+                if current_node in g_score:
+                    temp_g_score = g_score[current_node] + graph.distance(neighbor_node, current_node)
 
+                if neighbor_node not in g_score or temp_g_score < g_score[current_node]:
+                    parent_nodes[neighbor_node] = current_node
+                    g_score[neighbor_node] = temp_g_score
+                    f_score[neighbor_node] = g_score[neighbor_node] + heuristicCost(neighbor_node, dest_node)
+                    frontier.put(PriorityWrapper(f_score[neighbor_node], neighbor_node))
+
+
+            """
             if node not in g_score:
                 frontier.append((float('inf'), node))
                 g_score[node] = float('inf')
@@ -190,16 +206,40 @@ def a_star_search(graph, initial_node, dest_node):
 
             elif temp_g_score >= g_score[node]:
                 continue
-
-            parent_nodes[node] = current_node
-            g_score[node] = temp_g_score
-            f_score[node] = g_score[node] + heuristicCost(node, dest_node)
+            parent_nodes[neighbor] = current_node
+            g_score[neighbor] = temp_g_score
+            f_score[neighbor] = g_score[neighbor] + heuristicCost(neighbor, dest_node)
+            """
 
     return []
 
 
 def heuristicCost(from_node, to_node):
-    d = 1
+    d = 1.4
     dx = abs(from_node.data.x - to_node.data.x)  
     dy = abs(from_node.data.y - to_node.data.y)
     return d * math.sqrt(dx * dx + dy * dy)
+
+
+class PriorityWrapper(object):
+    """Node represents basic unit of graph"""
+    def __init__(self, distance, data):
+        self.data = data
+        self.distance = distance
+
+    def __str__(self):
+        return 'Node({})'.format(self.data)
+    def __repr__(self):
+        return 'Node({})'.format(self.data)
+
+    def __eq__(self, other_node):
+        return self.data == other_node.data and self.distance == other_node.priority
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        return self.distance < other.distance
+
+    def __hash__(self):
+        return hash(self.data)
